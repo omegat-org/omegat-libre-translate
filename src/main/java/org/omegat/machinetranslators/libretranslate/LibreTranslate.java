@@ -29,8 +29,6 @@
 
 package org.omegat.machinetranslators.libretranslate;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.omegat.core.Core;
 import org.omegat.core.machinetranslators.BaseCachedTranslate;
 import org.omegat.core.machinetranslators.MachineTranslateError;
@@ -38,13 +36,16 @@ import org.omegat.gui.exttrans.MTConfigDialog;
 import org.omegat.util.HttpConnectionUtils;
 import org.omegat.util.Language;
 import org.omegat.util.Preferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.Window;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Support of Libre Translate.
@@ -54,7 +55,8 @@ import java.util.TreeMap;
  */
 public class LibreTranslate extends BaseCachedTranslate {
 
-    private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("org.omegat.machinetranslators.libretranslate");
+    private static final ResourceBundle BUNDLE =
+            ResourceBundle.getBundle("org.omegat.machinetranslators.libretranslate");
     private static final Logger LOGGER = LoggerFactory.getLogger(LibreTranslate.class);
 
     private static final String ALLOW_LIBRE_TRANSLATE = "allow.libre.translate";
@@ -68,8 +70,7 @@ public class LibreTranslate extends BaseCachedTranslate {
         Core.registerMachineTranslationClass(LibreTranslate.class);
     }
 
-    public static void unloadPlugins() {
-    }
+    public static void unloadPlugins() {}
 
     public LibreTranslate() {
         serverUrl = Preferences.getPreference(LIBRE_TRANSLATE_SERVER_URL);
@@ -134,7 +135,10 @@ public class LibreTranslate extends BaseCachedTranslate {
             }
             LOGGER.atError().setMessage(BUNDLE.getString("MT_JSON_ERROR")).log();
         } catch (Exception e) {
-            LOGGER.atError().setCause(e).setMessage(BUNDLE.getString("MT_JSON_ERROR")).log();
+            LOGGER.atError()
+                    .setCause(e)
+                    .setMessage(BUNDLE.getString("MT_JSON_ERROR"))
+                    .log();
         }
         throw new MachineTranslateError(BUNDLE.getString("MT_JSON_ERROR"));
     }
