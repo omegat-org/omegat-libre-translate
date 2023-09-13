@@ -37,7 +37,7 @@ import org.omegat.util.HttpConnectionUtils;
 import org.omegat.util.Language;
 import org.omegat.util.Preferences;
 
-import java.awt.Window;
+import java.awt.*;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
@@ -56,10 +56,10 @@ import org.slf4j.LoggerFactory;
 public class LibreTranslate extends BaseCachedTranslate {
 
     private static final ResourceBundle BUNDLE =
-            ResourceBundle.getBundle("org.omegat.machinetranslators.libretranslate");
+            ResourceBundle.getBundle("org.omegat.machinetranslators.libretranslate.Bundle");
     private static final Logger LOGGER = LoggerFactory.getLogger(LibreTranslate.class);
 
-    private static final String ALLOW_LIBRE_TRANSLATE = "allow.libre.translate";
+    public static final String ALLOW_LIBRE_TRANSLATE = "allow.libre.translate";
     private static final String LIBRE_TRANSLATE_SERVER_URL = "libre.translate.server.url";
     protected String serverUrl;
 
@@ -127,11 +127,8 @@ public class LibreTranslate extends BaseCachedTranslate {
         try {
             JsonNode rootNode = mapper.readTree(json);
             JsonNode translations = rootNode.get("translatedText");
-            if (translations != null && translations.has(0)) {
-                JsonNode textNode = translations.get(0).get("text");
-                if (textNode != null) {
-                    return translations.get(0).get("text").asText();
-                }
+            if (translations != null) {
+                return translations.asText();
             }
             LOGGER.atError().setMessage(BUNDLE.getString("MT_JSON_ERROR")).log();
         } catch (Exception e) {
@@ -165,6 +162,7 @@ public class LibreTranslate extends BaseCachedTranslate {
 
         dialog.panel.valueLabel1.setText(BUNDLE.getString("MT_ENGINE_LIBRE_TRANSLATE_URL_LABEL"));
         dialog.panel.valueField1.setText(Preferences.getPreference(LIBRE_TRANSLATE_SERVER_URL));
+        dialog.panel.valueField1.setPreferredSize(new Dimension(150, 20));
         dialog.panel.valueLabel2.setVisible(false);
         dialog.panel.valueField2.setVisible(false);
         dialog.show();

@@ -10,7 +10,7 @@ version = "0.0.1"
 
 omegat {
     version = "6.0.0"
-    pluginClass = "org.omegat.machinetranslators.libretranslate.LibreTranslatePlugin"
+    pluginClass = "org.omegat.machinetranslators.libretranslate.LibreTranslate"
 }
 
 java {
