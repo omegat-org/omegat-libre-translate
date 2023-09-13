@@ -24,7 +24,6 @@
  **************************************************************************/
 package org.omegat.core;
 
-import com.vlsolutions.swing.docking.DockingDesktop;
 import org.omegat.core.data.EntryKey;
 import org.omegat.core.data.NotLoadedProject;
 import org.omegat.core.data.SourceTextEntry;
@@ -49,6 +48,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 
 import com.vlsolutions.swing.docking.Dockable;
+import com.vlsolutions.swing.docking.DockingDesktop;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
