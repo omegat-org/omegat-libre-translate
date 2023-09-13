@@ -1,5 +1,7 @@
 package org.omegat.machinetranslators.libretranslate;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.omegat.core.TestCore;
 import org.omegat.util.Language;
 import org.omegat.util.Preferences;
@@ -42,9 +44,12 @@ public class LibreTranslateTest extends TestCore {
 
     @Test
     public void testResponse() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
         Preferences.setPreference(LibreTranslate.ALLOW_LIBRE_TRANSLATE, true);
         String sourceText = "Hello, how are you today?";
         String encoded = URLEncoder.encode(sourceText, StandardCharsets.UTF_8);
+        JsonNode json = mapper.readTree("{\n  \"translatedText\": \n      \"Hola, ¿cómo estás hoy?\"\n}");
+
         WireMock.stubFor(WireMock.post(WireMock.anyUrl())
                 .withHeader("Content-Type", WireMock.equalTo("application/x-www-form-urlencoded"))
                 .withRequestBody(WireMock.and(
@@ -52,19 +57,15 @@ public class LibreTranslateTest extends TestCore {
                         WireMock.containing("source=en"),
                         WireMock.containing("target=es")
                 ))
-                // .withHeader("Accept", WireMock.equalTo("application/json"))
                 .willReturn(WireMock.aResponse()
                         .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("{\n"
-                                + "  \"translatedText\": \n"
-                                + "      \"Hola, \u00BFc\u00F3mo est\u00E1s hoy?\"\n"
-                                + "}")));
+                        .withHeader("Content-Type", "application/json;charset=UTF-8")
+                        .withJsonBody(json)));
 
         int port = wireMockRule.port();
         String url = String.format("http://localhost:%d/translate", port);
         LibreTranslate translator = new LibreTranslate(url);
         String result = translator.translate(new Language("en"), new Language("es"), sourceText);
-        assertEquals("Hola, \u00BFc\u00F3mo est\u00E1s hoy?", result);
+        assertEquals("Hola, ¿cómo estás hoy?", result);
     }
 }
