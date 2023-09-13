@@ -2,7 +2,6 @@ plugins {
     java
     signing
     distribution
-    maven
     id("com.diffplug.spotless") version "6.12.0"
     id("org.omegat.gradle") version "1.5.11"
 }
@@ -11,7 +10,7 @@ version = "0.0.1"
 
 omegat {
     version = "6.0.0"
-    pluginClass = "org.omegat.filters2.text.dokuwiki.DokuWikiFilter"
+    pluginClass = "org.omegat.machinetranslators.libretranslate.LibreTranslatePlugin"
 }
 
 java {
@@ -22,13 +21,10 @@ java {
 
 dependencies {
     packIntoJar("org.slf4j:slf4j-api:2.0.7")
-    implementation("commons-io:commons-io:2.5")
-    implementation("commons-lang:commons-lang:2.6")
     implementation("org.slf4j:slf4j-nop:2.0.7")
-    testImplementation("junit:junit:4.13")
-    testImplementation("xmlunit:xmlunit:1.6")
-    testImplementation("org.madlonkay.supertmxmerge:supertmxmerge:2.0.1")
-    testImplementation("com.alibaba:fastjson:1.2.17")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
+    testImplementation("junit:junit:4.13.2")
 }
 
 distributions {
