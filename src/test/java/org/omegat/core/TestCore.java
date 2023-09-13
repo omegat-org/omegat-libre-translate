@@ -24,6 +24,7 @@
  **************************************************************************/
 package org.omegat.core;
 
+import com.vlsolutions.swing.docking.DockingDesktop;
 import org.omegat.core.data.EntryKey;
 import org.omegat.core.data.NotLoadedProject;
 import org.omegat.core.data.SourceTextEntry;
@@ -126,6 +127,11 @@ public abstract class TestCore {
 
             public IMainMenu getMainMenu() {
                 return mainMenu;
+            }
+
+            @Override
+            public DockingDesktop getDesktop() {
+                return null;
             }
 
             public Cursor getCursor() {
@@ -305,6 +311,9 @@ public abstract class TestCore {
             public void replaceEditText(String text) {}
 
             @Override
+            public void replaceEditTextAndMark(String text, String origin) {}
+
+            @Override
             public void removeFilter() {}
 
             @Override
@@ -336,6 +345,18 @@ public abstract class TestCore {
 
             @Override
             public void prevEntry() {}
+
+            @Override
+            public void nextXAutoEntry() {}
+
+            @Override
+            public void prevXAutoEntry() {}
+
+            @Override
+            public void nextXEnforcedEntry() {}
+
+            @Override
+            public void prevXEnforcedEntry() {}
 
             @Override
             public void nextUntranslatedEntry() {}
@@ -397,6 +418,9 @@ public abstract class TestCore {
             }
 
             @Override
+            public void selectSourceText() {}
+
+            @Override
             public IEditorFilter getFilter() {
                 return null;
             }
@@ -439,6 +463,9 @@ public abstract class TestCore {
 
             @Override
             public void changeCase(CHANGE_CASE_TO newCase) {}
+
+            @Override
+            public void replaceEditText(String text, String origin) {}
 
             @Override
             public void activateEntry() {}
