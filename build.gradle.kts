@@ -21,11 +21,12 @@ java {
 
 dependencies {
     packIntoJar("org.slf4j:slf4j-api:2.0.7")
-    implementation("org.slf4j:slf4j-nop:2.0.7")
-    implementation("commons-io:commons-io:2.11.0")
     implementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("commons-io:commons-io:2.11.0")
+    testImplementation("com.github.tomakehurst:wiremock-jre8:2.35.0")
+    testImplementation("org.slf4j:slf4j-nop:2.0.7")
 }
 
 distributions {

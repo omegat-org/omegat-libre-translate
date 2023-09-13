@@ -37,7 +37,8 @@ import org.omegat.util.HttpConnectionUtils;
 import org.omegat.util.Language;
 import org.omegat.util.Preferences;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Window;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
@@ -54,7 +55,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class LibreTranslate extends BaseCachedTranslate {
-
+    private static final String DEFAULT_URL = "https://libretranslate.com/translate";
     private static final ResourceBundle BUNDLE =
             ResourceBundle.getBundle("org.omegat.machinetranslators.libretranslate.Bundle");
     private static final Logger LOGGER = LoggerFactory.getLogger(LibreTranslate.class);
@@ -66,14 +67,17 @@ public class LibreTranslate extends BaseCachedTranslate {
     /**
      * Register plugins into OmegaT.
      */
+    @SuppressWarnings("unused")
     public static void loadPlugins() {
         Core.registerMachineTranslationClass(LibreTranslate.class);
     }
 
+    @SuppressWarnings("unused")
     public static void unloadPlugins() {}
 
+    @SuppressWarnings("unused")
     public LibreTranslate() {
-        serverUrl = Preferences.getPreference(LIBRE_TRANSLATE_SERVER_URL);
+        serverUrl = Preferences.getPreferenceDefault(LIBRE_TRANSLATE_SERVER_URL, DEFAULT_URL);
     }
 
     /**
@@ -107,7 +111,7 @@ public class LibreTranslate extends BaseCachedTranslate {
         params.put("source", sLang.getLanguageCode().toLowerCase());
         params.put("target", tLang.getLanguageCode().toLowerCase());
         Map<String, String> headers = new TreeMap<>();
-        String v = HttpConnectionUtils.get(serverUrl, params, headers, "UTF-8");
+        String v = HttpConnectionUtils.post(serverUrl, params, headers);
         String tr = getJsonResults(v);
         if (tr == null) {
             return null;
@@ -130,12 +134,9 @@ public class LibreTranslate extends BaseCachedTranslate {
             if (translations != null) {
                 return translations.asText();
             }
-            LOGGER.atError().setMessage(BUNDLE.getString("MT_JSON_ERROR")).log();
+            LOGGER.error(BUNDLE.getString("MT_JSON_ERROR"));
         } catch (Exception e) {
-            LOGGER.atError()
-                    .setCause(e)
-                    .setMessage(BUNDLE.getString("MT_JSON_ERROR"))
-                    .log();
+            LOGGER.error(BUNDLE.getString("MT_JSON_ERROR"), e);
         }
         throw new MachineTranslateError(BUNDLE.getString("MT_JSON_ERROR"));
     }
